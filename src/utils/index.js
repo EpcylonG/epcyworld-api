@@ -1,2 +1,3 @@
+const auth = require("./auth");
 
-module.exports = {}
+module.exports = { auth };

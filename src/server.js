@@ -8,6 +8,6 @@ server.use(cors())
 server.use(morgan("dev"));
 server.use(express.json())
 
-// routes(server);
+routes(server);
 
 module.exports = server;
