@@ -1,20 +1,32 @@
 const User = require("../models/user-model");
 const { sendResponse } = require("../services")
 
-function getUserData(req, res) {
+async function getUserData(req, res) {
 
-    return res.status(200).json(sendResponse({
-        id: req.user.uid,
-        email: req.user.email
-    }))
+    try{
+        const user = await User.findOne({ uid: req.body.email });
+        if (!user)  res.status(404).send({ data: "User not found" });
+        res.status(202).send({ data: user });
+    } catch (error) {
+        console.error(error) 
+    }
+}
 
+async function loginUser(req, res) {
+    try{
+        const user = await User.findOne({ email: req.user.email });
+        if(!user) res.status(404).send({ data: "User is not register" });
+        res.status(202).send({ data: user });
+    } catch(error) {
+        console.error(error)
+    }
 }
 
 async function createUser(req, res) {
 
     try {
         const user = await User.findOne({ email: req.body.email });
-        if (user) response(res, 200, "user already exists");
+        if (user) return res.status(401).json(sendResponse({ data: "User already exists"}))
 
         const newUser = await User.create({
             uid: req.body.uid,
@@ -31,5 +43,6 @@ async function createUser(req, res) {
 
 module.exports = { 
     getUserData, 
+    loginUser,
     createUser 
 }
