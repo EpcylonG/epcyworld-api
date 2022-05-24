@@ -1,3 +1,3 @@
+const userController = require("./userController")
 
-
-module.exports = {}
+module.exports = { userController }
